@@ -186,20 +186,6 @@ uv run --locked --extra dev mypy src tests
 
 测试覆盖 unit、hook flow、CLI、storage、golden fixtures、rule engine、关系 review、observability 和包内容验证。
 
-## GitHub 仓库信息建议
-
-仓库描述：
-
-```text
-Hermes Agent plugin that audits and gates agent-created skills before they become persistent behavior.
-```
-
-Topics：
-
-```text
-hermes-agent, ai-agents, agent-security, skills, plugins, python, governance, policy-engine, sqlite, security-tools
-```
-
 ## 致谢
 
 这个项目是原创实现，灵感来自 hermes-curator-evolver、SkillClaw、asm、skill-flow 和 skill-scanner 等 skill governance 实验。除非明确说明，没有复制第三方代码。

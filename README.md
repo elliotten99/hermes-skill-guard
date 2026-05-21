@@ -203,20 +203,6 @@ uv run --locked --extra dev mypy src tests
 Tests cover unit behavior, hook flow, CLI commands, storage, golden fixtures,
 rule evaluation, relation review, observability, and package contents.
 
-## Repository Metadata
-
-Suggested repository description:
-
-```text
-Hermes Agent plugin that audits and gates agent-created skills before they become persistent behavior.
-```
-
-Suggested topics:
-
-```text
-hermes-agent, ai-agents, agent-security, skills, plugins, python, governance, policy-engine, sqlite, security-tools
-```
-
 ## Acknowledgements
 
 This project is an original implementation inspired by earlier skill-governance
