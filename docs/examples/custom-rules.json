@@ -1,0 +1,76 @@
+{
+  "version": "1.0",
+  "disabled_rules": [
+    "manifest.description_too_short"
+  ],
+  "rules": [
+    {
+      "id": "org.banned_namespace",
+      "description": "Forbid creating skills whose name uses the reserved 'internal:' namespace.",
+      "when": {
+        "and": [
+          { "op": "present", "field": "skill_name" },
+          { "op": "matches", "field": "skill_name", "value": "^internal:" }
+        ]
+      },
+      "then": {
+        "severity": "block",
+        "message": "skill name '{skill_name}' uses the reserved 'internal:' namespace"
+      }
+    },
+    {
+      "id": "org.min_description_length",
+      "description": "Replace the default 20-char minimum with a stricter 80-char minimum.",
+      "when": {
+        "op": "length_less_than",
+        "field": "content",
+        "value": 80
+      },
+      "then": {
+        "severity": "warn",
+        "message": "skill content must be at least 80 characters (got {content_length})"
+      }
+    },
+    {
+      "id": "org.disallow_debug_tool",
+      "description": "Refuse to create skills that wrap an internal debug tool.",
+      "when": {
+        "op": "contains",
+        "field": "content",
+        "value": "tool: debug_eval",
+        "ignore_case": true
+      },
+      "then": {
+        "severity": "candidate",
+        "message": "skill content references the debug_eval tool; route through skill review"
+      }
+    },
+    {
+      "id": "org.require_target_path",
+      "description": "Demand an explicit target path for production deployments.",
+      "when": {
+        "and": [
+          { "op": "equals", "field": "enforcement_mode", "value": "block" },
+          { "op": "missing", "field": "target_path" }
+        ]
+      },
+      "then": {
+        "severity": "warn",
+        "message": "production skill creation requires an explicit target path"
+      }
+    },
+    {
+      "id": "org.block_shell_pipes",
+      "description": "Block skills whose body looks like a shell pipeline grabbing curl | sh.",
+      "when": {
+        "op": "matches",
+        "field": "content",
+        "value": "curl\\s+[^|]*\\|\\s*(sh|bash)"
+      },
+      "then": {
+        "severity": "block",
+        "message": "skill content contains a 'curl | sh' pattern which is disallowed by policy"
+      }
+    }
+  ]
+}

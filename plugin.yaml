@@ -1,0 +1,16 @@
+name: skill-guard
+version: "0.1.11"
+description: Hermes-native guard for agent-created skills.
+provides_tools:
+  - skill_guard_doctor
+  - skill_guard_preflight
+  - skill_guard_candidates
+  - skill_guard_promote
+  - skill_guard_relations
+  - skill_guard_report
+  - skill_guard_compat
+  - skill_guard_auto_promote
+provides_hooks:
+  - pre_tool_call
+  - post_tool_call
+requires_env: []

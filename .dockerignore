@@ -1,0 +1,65 @@
+# Git
+.git
+.gitignore
+
+# GitHub
+.github
+
+# Python cache
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+.venv
+venv/
+env/
+ENV/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Test / coverage
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Documentation
+docs/
+*.md
+LICENSE
+NOTICE.md
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+SECURITY.md
+CHANGELOG.md
+
+# CI / DevOps
+.ai-team
+scripts/
+docker/docker-compose.yml
+
+# Misc
+.env
+.env.example
+.pre-commit-config.yaml
+
+# Local development
+*.log
+.DS_Store

@@ -1,0 +1,75 @@
+{
+  "version": "1.0",
+  "rules": [
+    {
+      "id": "manifest.name_missing",
+      "description": "Reject skill creation calls that omit the skill name. Mirrors the v0.1 hardcoded check.",
+      "priority": 10,
+      "when": {
+        "op": "missing",
+        "field": "skill_name"
+      },
+      "then": {
+        "severity": "warn",
+        "message": "skill name is missing"
+      }
+    },
+    {
+      "id": "naming.plugin_namespace",
+      "description": "Warn when the skill name uses the plugin namespace separator ':' (e.g. 'plugin:foo').",
+      "priority": 20,
+      "when": {
+        "and": [
+          { "op": "present", "field": "skill_name" },
+          { "op": "contains", "field": "skill_name", "value": ":" }
+        ]
+      },
+      "then": {
+        "severity": "warn",
+        "message": "skill name looks like a plugin namespace"
+      }
+    },
+    {
+      "id": "manifest.description_too_short",
+      "description": "Require the combined content/description to be at least 20 non-whitespace characters.",
+      "priority": 30,
+      "when": {
+        "op": "length_less_than",
+        "field": "content",
+        "value": 20
+      },
+      "then": {
+        "severity": "warn",
+        "message": "skill content or description is too short"
+      }
+    },
+    {
+      "id": "safety.secret_pattern",
+      "description": "Block creation when the content matches a known secret pattern (API keys, JWTs, private keys, etc.).",
+      "priority": 5,
+      "when": {
+        "op": "matches",
+        "field": "content",
+        "value": "(sk-[A-Za-z0-9_\\-]{16,})|(ghp_[A-Za-z0-9_]{20,})|(eyJ[A-Za-z0-9_\\-]+\\.[A-Za-z0-9_\\-]+\\.[A-Za-z0-9_\\-]+)|(-----BEGIN [A-Z ]*PRIVATE KEY-----)|(AKIA[0-9A-Z]{16})|(\\b[A-Fa-f0-9]{48,}\\b)"
+      },
+      "then": {
+        "severity": "warn",
+        "message": "skill content appears to contain a secret"
+      }
+    },
+    {
+      "id": "lifecycle.dry_run_downgrade",
+      "description": "Informational marker emitted when dry_run=true causes the engine to downgrade the decision to warn. The downgrade itself is applied by the engine after rule evaluation; this rule only records the reason.",
+      "priority": 1000,
+      "when": {
+        "op": "equals",
+        "field": "dry_run",
+        "value": true
+      },
+      "then": {
+        "severity": "info",
+        "message": "dry_run=true downgraded enforcement decision to warn"
+      }
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+dry_run: true
+enforcement:
+  mode: audit
+  timeout_ms: 150
+  fail_open: true
+trace_cache:
+  ttl_minutes: 10
+  max_entries: 1000
+events:
+  ttl_days: 7
+  max_rows: 10000
+  max_db_mb: 50
+  rotate_every_n_writes: 100
+logging:
+  capture_raw_payloads: false
+  redaction_mode: strict
+  max_field_length: 512
+  hash_redacted_values: true
+intents:
+  enabled: []
+rules_path: null
+auto_promote:
+  enabled: false
+  min_age_hours: 168
+  require_no_conflicts: true
+  require_no_duplicates: false
+  dry_run: true
+observability:
+  enabled: false
+  otel_enabled: false
+  prometheus_enabled: false
+  prometheus_port: 0

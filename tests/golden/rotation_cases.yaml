@@ -1,0 +1,5 @@
+- id: max_rows_two
+  max_rows: 2
+  inserted_rows: 4
+  expected_max_rows: 2
+

@@ -1,0 +1,11 @@
+- id: duplicate_exact_name_001
+  input:
+    existing_skill:
+      name: tdd-workflow
+      description: Run tests before and after edits.
+    candidate:
+      name: tdd-workflow
+      description: Run tests before and after edits.
+  expected:
+    rule_id: duplication.exact_name
+

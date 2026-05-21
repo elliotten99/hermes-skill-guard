@@ -1,0 +1,9 @@
+- id: detected_to_candidate
+  from: detected
+  to: candidate
+  allowed: true
+- id: archived_to_candidate
+  from: archived
+  to: candidate
+  allowed: false
+

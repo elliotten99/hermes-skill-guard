@@ -1,0 +1,23 @@
+# Hermes capability compatibility map.
+#
+# v0.1: this file is intentionally empty. The skill-guard plugin owns all
+# governance behaviour and does not yet probe Hermes for first-party
+# equivalents.
+#
+# Future compatibility entries use the form:
+#
+#   known_capabilities:
+#     <capability-id>:
+#       hermes_min_version: "X.Y.Z"
+#       supersedes_intent: "<intent-id>"
+#
+# so that :mod:`hermes_skill_guard.intents.compatibility` can retire plugin
+# intents that Hermes core has absorbed.
+hermes:
+  known_capabilities:
+    skill_preflight:
+      hermes_min_version: "0.14.0"
+      supersedes_intent: "preflight"
+    skill_curation:
+      hermes_min_version: "0.15.0"
+      supersedes_intent: "candidates"

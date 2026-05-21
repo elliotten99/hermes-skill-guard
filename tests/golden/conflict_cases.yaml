@@ -1,0 +1,8 @@
+- id: conflict_plugin_namespace_001
+  input:
+    candidate:
+      name: "skill-guard:skill-guard"
+      description: Attempt to edit plugin skill namespace.
+  expected:
+    rule_id: naming.plugin_namespace
+

@@ -1,0 +1,6 @@
+- id: redacts_openai_key
+  input:
+    token: sk-abcdefghijklmnopqrstuvwxyz123456
+  expected:
+    not_contains: sk-abcdefghijklmnopqrstuvwxyz
+

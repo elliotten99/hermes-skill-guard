@@ -1,0 +1,11 @@
+# Global fallback
+* @elliotten99
+
+# Core intent definitions
+/src/hermes_skill_guard/intents/ @elliotten99
+
+# Documentation
+/docs/ @elliotten99
+
+# GitHub configuration
+/.github/ @elliotten99

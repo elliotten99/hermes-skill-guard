@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask a question / start a discussion
+    url: https://github.com/elliotten99/hermes-skill-guard/discussions
+    about: Please use GitHub Discussions for questions, ideas, and general help.
+  - name: Report a security vulnerability
+    url: https://github.com/elliotten99/hermes-skill-guard/blob/main/SECURITY.md
+    about: Please report security issues privately as described in SECURITY.md (do not open a public issue).

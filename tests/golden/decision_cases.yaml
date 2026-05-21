@@ -1,0 +1,11 @@
+- id: dry_run_warn
+  input:
+    tool_name: skill_manage
+    args:
+      action: create
+      name: x
+      content: short
+  expected:
+    decision: warn
+    rule_id: lifecycle.dry_run_downgrade
+

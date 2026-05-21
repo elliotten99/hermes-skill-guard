@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hermes-skill-guard/schemas/rules.schema.json",
+  "title": "Hermes Skill Guard Rule File",
+  "description": "Declarative rule definitions consumed by the configurable rule engine (T10). A rule file is loaded by hermes-skill-guard and merged with the built-in default rules.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version"],
+  "properties": {
+    "version": {
+      "description": "Schema version of the rule file. Currently only '1.0' is accepted.",
+      "type": "string",
+      "const": "1.0"
+    },
+    "disabled_rules": {
+      "description": "Built-in or previously loaded rule ids to disable. Useful for opting out of a default rule without forking the codebase.",
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "rules": {
+      "description": "List of rule definitions. Evaluated in array order; the first matching rule of each severity contributes its reason to the decision.",
+      "type": "array",
+      "items": { "$ref": "#/$defs/rule" }
+    }
+  },
+  "$defs": {
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "when", "then"],
+      "properties": {
+        "id": {
+          "description": "Stable, dotted rule identifier. Must be unique within the merged rule set (default + user).",
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*(\\.[A-Za-z][A-Za-z0-9_]*)+$"
+        },
+        "description": {
+          "description": "Human-readable summary of what the rule checks and why it exists.",
+          "type": "string"
+        },
+        "enabled": {
+          "description": "When false, the rule is loaded but skipped during evaluation. Default: true.",
+          "type": "boolean",
+          "default": true
+        },
+        "priority": {
+          "description": "Lower numbers are evaluated first within the same severity bucket. Default: 100.",
+          "type": "integer",
+          "minimum": 0,
+          "default": 100
+        },
+        "when": {
+          "description": "Boolean condition tree. The rule fires when the tree evaluates to true against the current ToolCall context.",
+          "$ref": "#/$defs/condition"
+        },
+        "then": { "$ref": "#/$defs/action" }
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["severity", "message"],
+      "properties": {
+        "severity": {
+          "description": "Severity contributed to the final decision. The engine picks the highest severity across firing rules: info < warn < candidate < block. 'info' rules add a reason but never change the decision from allow.",
+          "type": "string",
+          "enum": ["info", "warn", "candidate", "block"]
+        },
+        "message": {
+          "description": "Reason text appended to Decision.reasons. May reference fields via {field_name} placeholders (e.g. {skill_name}). Unknown placeholders are left untouched.",
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "condition": {
+      "description": "Either a leaf condition (op + field/value) or a logical combinator (and / or / not).",
+      "oneOf": [
+        { "$ref": "#/$defs/leafCondition" },
+        { "$ref": "#/$defs/andCondition" },
+        { "$ref": "#/$defs/orCondition" },
+        { "$ref": "#/$defs/notCondition" }
+      ]
+    },
+    "leafCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["op", "field"],
+      "properties": {
+        "op": {
+          "type": "string",
+          "enum": [
+            "equals",
+            "not_equals",
+            "contains",
+            "not_contains",
+            "matches",
+            "missing",
+            "present",
+            "length_less_than",
+            "length_greater_than",
+            "length_equals"
+          ]
+        },
+        "field": {
+          "description": "Context field name. Available: skill_name, tool_name, content, content_length, description, target_path, dry_run, enforcement_mode.",
+          "type": "string",
+          "enum": [
+            "skill_name",
+            "tool_name",
+            "content",
+            "content_length",
+            "description",
+            "target_path",
+            "dry_run",
+            "enforcement_mode"
+          ]
+        },
+        "value": {
+          "description": "Comparison value. Required for all ops except 'missing' and 'present'. Type depends on op: string for equals/contains/matches; integer for length_*; boolean for equals on boolean fields."
+        },
+        "ignore_case": {
+          "description": "Apply case-insensitive comparison for string ops. Default: false.",
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "andCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["and"],
+      "properties": {
+        "and": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/condition" }
+        }
+      }
+    },
+    "orCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["or"],
+      "properties": {
+        "or": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/condition" }
+        }
+      }
+    },
+    "notCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["not"],
+      "properties": {
+        "not": { "$ref": "#/$defs/condition" }
+      }
+    }
+  }
+}
